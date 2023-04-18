@@ -10,6 +10,7 @@ function Clock() {
     const [show, setShow] = useState<boolean>(false)
 
     const start = () => {
+        stop()
         const intervalId = Number(setInterval(() => {
             setDate(new Date())
         }, 1000))
@@ -44,12 +45,14 @@ function Clock() {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
+        hour12: false
     }
 
     const formatter = new Intl.DateTimeFormat('en-US', options)
 
     const stringTime = formatter.format(date) || <br/>
-    const stringDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}` || <br/>
+    const stringDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}` ||
+        <br/>
     const stringDay = date.toLocaleString('en-US', {weekday: 'long'}) || <br/>
     const stringMonth = date.toLocaleString('en-US', {month: 'long'}) || <br/>
 
@@ -71,8 +74,8 @@ function Clock() {
             >
                 <span id={'hw9-day'}>{stringDay}</span>,{' '}
                 <span id={'hw9-time'}>
-                    <strong>{stringTime}</strong>
-                </span>
+                     <strong>{stringTime}</strong>
+                 </span>
             </div>
 
             <div id={'hw9-more'}>

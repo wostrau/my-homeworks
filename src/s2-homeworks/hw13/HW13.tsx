@@ -40,7 +40,7 @@ const HW13 = () => {
             .post(url, {success: x})
             .then((res) => {
                 console.log(res)
-                setCode('code 200!')
+                setCode('200')
                 setImage(success200)
                 // дописать
                 setText('success!')
@@ -50,13 +50,13 @@ const HW13 = () => {
             .catch((error) => {
                 setIsFetching(false)
                 if (error.status === 400) {
-                    setCode('code 400!')
+                    setCode('400')
                     setImage(error400)
                     setText('Bad Request')
                     setInfo('Bad Request')
                     console.log('Bad Request')
                 } else if (error.status === 500) {
-                    setCode('code 500!')
+                    setCode('500')
                     setImage(error500)
                     setText('Server Error')
                     setInfo('Server Error')

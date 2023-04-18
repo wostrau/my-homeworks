@@ -1,8 +1,10 @@
 import React, {useState} from 'react'
+import axios from 'axios'
+
+import SuperButton from '../hw04/common/c2-SuperButton/SuperButton'
 import s2 from '../../s1-main/App.module.css'
 import s from './HW13.module.css'
-import SuperButton from '../hw04/common/c2-SuperButton/SuperButton'
-import axios from 'axios'
+
 import success200 from './images/200.svg'
 import error400 from './images/400.svg'
 import error500 from './images/500.svg'
@@ -15,6 +17,8 @@ import errorUnknown from './images/error.svg'
 * */
 
 const HW13 = () => {
+    const [isFetching, setIsFetching] = useState<boolean>(false)
+
     const [code, setCode] = useState('')
     const [text, setText] = useState('')
     const [info, setInfo] = useState('')
@@ -30,18 +34,41 @@ const HW13 = () => {
         setImage('')
         setText('')
         setInfo('...loading')
+        setIsFetching(true)
 
         axios
             .post(url, {success: x})
             .then((res) => {
-                setCode('Код 200!')
+                console.log(res)
+                setCode('code 200!')
                 setImage(success200)
                 // дописать
-
+                setText('success!')
+                setInfo('everything already loaded')
+                setIsFetching(false)
             })
-            .catch((e) => {
+            .catch((error) => {
+                setIsFetching(false)
+                if (error.status === 400) {
+                    setCode('code 400!')
+                    setImage(error400)
+                    setText('Bad Request')
+                    setInfo('Bad Request')
+                    console.log('Bad Request')
+                } else if (error.status === 500) {
+                    setCode('code 500!')
+                    setImage(error500)
+                    setText('Server Error')
+                    setInfo('Server Error')
+                    console.log('Server Error')
+                } else {
+                    setCode('code unknown')
+                    setImage(errorUnknown)
+                    setText('Unknown Error')
+                    setInfo('Unknown Error')
+                    console.log('Unknown Error')
+                }
                 // дописать
-
             })
     }
 
@@ -56,6 +83,7 @@ const HW13 = () => {
                         onClick={send(true)}
                         xType={'secondary'}
                         // дописать
+                        disabled={isFetching}
 
                     >
                         Send true
@@ -65,6 +93,7 @@ const HW13 = () => {
                         onClick={send(false)}
                         xType={'secondary'}
                         // дописать
+                        disabled={isFetching}
 
                     >
                         Send false
@@ -74,6 +103,7 @@ const HW13 = () => {
                         onClick={send(undefined)}
                         xType={'secondary'}
                         // дописать
+                        disabled={isFetching}
 
                     >
                         Send undefined
@@ -83,6 +113,7 @@ const HW13 = () => {
                         onClick={send(null)} // имитация запроса на не корректный адрес
                         xType={'secondary'}
                         // дописать
+                        disabled={isFetching}
 
                     >
                         Send null
